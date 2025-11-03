@@ -42,14 +42,14 @@ terraform init
 ```
 Isso irá iniciar o Terraform
 
-Depois rode:
+
+Depois rode para criar o ambiente:
 ```bash
 terraform apply
 ```
 
-Digitar "yes"
+Digite "yes" para confirmar.
 
-E esse vai criar o ambiente
 
 **2. Testar/acessar o programa**
 

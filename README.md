@@ -18,7 +18,9 @@ O ambiente é dividido em três serviços principais e duas redes para garantir 
 * **Docker (Container):**: Foi criado um Dockerfile e usamos imagens do PostgreSQL 15.8 e nginx Alpine para outros serviços.
 * **Volumes:** criamos o docker_volume pelo Terraform, para o banco de dados gravar as informações.
 **Variaveis de ambiente**: foram criadas variaveis de ambiente para setar credenciais e conexões POSTGRES_USER, POSTGRES_PASSWORD, etc
-
+**JavaScript (backend - com correção de bug)**: O index.js roda no backend, ele usa as variaveis de ambiente para se conectar ao banco e sobe um servidor na porta 3000 que ouve a chamada de API do nginx, ao receber ele roda a query "SELECT * FROM users" no banco, e envie a resposta para o frontend.
+Foi reescrito para se conectar corretamente ao banco usando variáveis de ambiente (cumprindo o requisito de "corrigir os problemas"), e o index.html do frontend foi depurado para o botão de API funcionar.
+**JavaScript (frontend)** roda a tela que vemos ao acessar http://localhost:8080, e espera o clique no botao "Verificar Backend e Banco",chama a API (nginx) e recebe a resposta do backend, informando o resultado: "Database is up" e "Migration runned", significando que o banco de dados esta online e confirmando que o container subiu.
 
 O Terraform cuida de criar as imagens, as redes (`rede-interna` e `rede-externa`) e os volumes, tudo com um comando.
 

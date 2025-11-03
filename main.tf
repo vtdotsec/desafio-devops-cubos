@@ -1,6 +1,6 @@
 # main.tf (A VERSÃO FINAL E CORRETA)
 
-# 1. Diga ao Terraform qual provedor usar (O CORRETO!)
+# 1. terraform e provider
 terraform {
   required_providers {
     docker = {
@@ -10,7 +10,7 @@ terraform {
   }
 }
 
-# 2. Defina as redes
+# 2. redes
 resource "docker_network" "rede_interna" {
   name = "rede-interna" # Backend <-> DB
 }
@@ -19,12 +19,12 @@ resource "docker_network" "rede_externa" {
   name = "rede-externa" # Proxy <-> Backend
 }
 
-# 3. Defina o volume para persistir os dados do DB
+# 3. Define o volume
 resource "docker_volume" "db_data" {
   name = "postgres-data"
 }
 
-# 4. Construa a imagem Docker do Backend
+# 4. imagem docker do backend
 resource "docker_image" "backend_image" {
   name = "backend-app:latest"
   build {
@@ -32,7 +32,7 @@ resource "docker_image" "backend_image" {
   }
 }
 
-# 5. Defina os Contêineres
+# 5. define os containers
 
 # -- BANCO DE DADOS --
 resource "docker_container" "db" {
@@ -47,20 +47,20 @@ resource "docker_container" "db" {
     "POSTGRES_DB=desafiodb"
   ]
 
-  # Volume 1: Os dados persistentes (O QUE ESTAVA FALTANDO)
+  # 1: dados persistentes
   volumes {
     volume_name    = docker_volume.db_data.name
     container_path = "/var/lib/postgresql/data"
   }
 
-  # Volume 2: O script de inicialização (O JEITO CORRETO)
+  # 2: inicialização
   volumes {
     host_path      = abspath("./db") # Monta a PASTA 'db'
     container_path = "/docker-entrypoint-initdb.d" # Na PASTA 'initdb.d'
     read_only      = true
   }
 
-  restart = "unless-stopped" # (O QUE ESTAVA FALTANDO)
+  restart = "unless-stopped"
 }
 
 # -- BACKEND --
@@ -97,14 +97,12 @@ resource "docker_container" "proxy" {
     external = 8080
   }
   
-  # A config 'default.conf' vai para a pasta 'conf.d'
   volumes {
     host_path      = abspath("./proxy/default.conf")
     container_path = "/etc/nginx/conf.d/default.conf"
     read_only      = true
   }
 
-  # O 'index.html' vai para a pasta 'html' padrão
   volumes {
     host_path      = abspath("./frontend/index.html")
     container_path = "/usr/share/nginx/html/index.html"

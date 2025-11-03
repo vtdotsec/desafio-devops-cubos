@@ -58,4 +58,12 @@ Para testar o programa, basta abrir um navegador no endereço http://localhost:8
 Na tela será possível visualizar a página do projeto e o botão principal, que ao acionado mostra as mensagens "Database is up" e "Migration runned"
 
 
+## Como desligar/parar o projeto
 
+Para parar e apagar tudo (containers, redes e o volume do banco):
+
+```bash
+terraform destroy
+```
+
+Digite "yes" para confirmar.

@@ -36,13 +36,13 @@ Com o Docker Desktop aberto (após a configuração inicial dele e podendo ser e
 
 **1. Inicializar o Terraform e subir o ambiente:**
 
+Rode o comando no terminal ou prompt:
 ```bash
 terraform init
 ```
-
 Isso irá iniciar o Terraform
 
-
+Depois rode:
 ```bash
 terraform apply
 ```
